@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Railway to Hell | LastStop Studios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --hell-main: #8a0303;    /* Rojo sangre principal */
+      --hell-accent: #ff6b1e;  /* Naranja infernal */
+      --hell-dark: #1a0000;    /* Fondo oscuro */
+      --hell-light: #f5f749;   /* Amarillo neón */
+      --pixel-border: #3a0c0c; /* Borde pixelado */
+    }
+    
+    body {
+      background-color: var(--hell-dark);
+      background-image: 
+        url('assets/pixel-grid.png');
+      font-family: 'Silkscreen', cursive;
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .pixel-container {
+      max-width: 1200px;
+      margin: 20px auto;
+      border: 4px solid var(--hell-main);
+      background-color: rgba(26, 0, 0, 0.85);
+      box-shadow: 0 0 0 8px var(--hell-accent),
+                  0 0 30px rgba(255, 30, 30, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .pixel-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, 
+        var(--hell-main), 
+        var(--hell-accent), 
+        var(--hell-light),
+        var(--hell-accent),
+        var(--hell-main));
+    }
+    
+    .pixel-header {
+      padding: 30px;
+      text-align: center;
+      background: url('assets/train-pixel-bg.png') center/cover;
+      border-bottom: 4px solid var(--hell-main);
+      position: relative;
+    }
+    
+    .game-title {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 3rem;
+      color: var(--hell-light);
+      text-shadow: 4px 4px 0 var(--hell-main),
+                  8px 8px 0 #000;
+      margin: 0;
+      padding: 20px;
+      background-color: rgba(26, 0, 0, 0.7);
+      display: inline-block;
+      border: 4px solid var(--hell-accent);
+    }
+    
+    .game-tagline {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1rem;
+      color: var(--hell-accent);
+      margin-top: 20px;
+      display: inline-block;
+      background-color: rgba(26, 0, 0, 0.9);
+      padding: 10px 20px;
+      border: 3px solid var(--hell-light);
+    }
+    
+    .pixel-section {
+      padding: 30px;
+      border-bottom: 2px dashed var(--hell-accent);
+      position: relative;
+    }
+    
+    .pixel-section:last-child {
+      border-bottom: none;
+    }
+    
+    .section-title {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.5rem;
+      color: var(--hell-light);
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--hell-accent);
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100px;
+      height: 3px;
+      background: var(--hell-light);
+    }
+    
+    .pixel-text {
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    
+    .pixel-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    
+    .pixel-list li {
+      margin-bottom: 10px;
+      padding-left: 25px;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    .pixel-list li::before {
+      content: ">";
+      position: absolute;
+      left: 0;
+      color: var(--hell-accent);
+      font-weight: bold;
+    }
+    
+    .pixel-img {
+      border: 4px solid var(--hell-main);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(255, 30, 30, 0.4);
+    }
+    
+    .pixel-img:hover {
+      transform: scale(1.05);
+      border-color: var(--hell-light);
+      box-shadow: 0 0 25px rgba(245, 247, 73, 0.6);
+    }
+    
+    .pixel-btn {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.8rem;
+      padding: 10px 20px;
+      background-color: var(--hell-main);
+      color: white;
+      border: 3px solid var(--hell-light);
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      margin: 5px;
+      display: inline-block;
+    }
+    
+    .pixel-btn:hover {
+      background-color: var(--hell-accent);
+      color: #000;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 0 var(--hell-light);
+    }
+    
+    .role-card {
+      background-color: rgba(138, 3, 3, 0.3);
+      border: 3px solid var(--hell-main);
+      text-align: center;
+      padding: 15px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .role-card:hover {
+      background-color: rgba(138, 3, 3, 0.5);
+      border-color: var(--hell-light);
+      transform: translateY(-5px);
+    }
+    
+    .role-name {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1rem;
+      color: var(--hell-light);
+      margin-bottom: 5px;
+    }
+    
+    .pixel-footer {
+      background: linear-gradient(to right, var(--hell-main), var(--hell-dark));
+      padding: 20px;
+      text-align: center;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.7rem;
+      border-top: 4px solid var(--hell-accent);
+    }
+    
+    .equal-height {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .equal-height .role-card {
+      flex: 1;
+    }
+
+    .gif-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-bottom: 20px;
+    }
+
+    .gif-container img {
+    width: 100%;
+    height: auto;
+    max-width: 200px; /* Tamaño máximo para todos los GIFs */
+    object-fit: contain; /* Evita distorsiones */
+    image-rendering: pixelated; /* Mantiene el estilo pixelado */
+    }
+
+    @media (max-width: 768px) {
+      .game-title {
+        font-size: 2rem;
+      }
+      
+      .game-tagline {
+        font-size: 0.7rem;
+      }
+      
+      .section-title {
+        font-size: 1.2rem;
+      }
+
+      .gif-container img {
+        max-width: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="pixel-overlay"></div>
+  
+  <div class="pixel-container">
+    <!-- Header -->
+    <div class="pixel-header">
+      <h1 class="game-title">RAILWAY TO HELL</h1>
+      <p class="game-tagline">"Death is not the last stop"</p>
+    </div>
+    
+    <!-- Trailer Section -->
+    <div class="pixel-section">
+      <h2 class="section-title">TRAILER</h2>
+      <div class="ratio ratio-4x3">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/J-ttC8Gt458?si=3Btl8JT8Iz6PU_Fy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <p class="pixel-text text-center mt-3">"Death is not the last stop"</p>
+    </div>
+     <!-- DESCRIPTION -->
+    <div class="pixel-section">
+      <h2 class="section-title">DESCRIPTION</h2>
+      <p class="pixel-text">
+          Railway to Hell is a Metroidvania-style action and exploration game set in a twisted, infernal railway system. Players take on the role of Nadia, a gang member trapped in this demonic underworld, driven by guilt and a desperate hope to reunite with her deceased sister. Navigate through corrupted train lines using a mix of intense melee combat, ranged attacks, and progressively unlocked abilities. Face off against powerful demon lords, solve environmental puzzles, and uncover the dark secrets of both the hellish world and Nadia’s past in a story of redemption, trauma, and survival.
+      </p>
+    </div>
+
+    <!-- Narrative Section -->
+    <div class="pixel-section">
+      <h2 class="section-title">NARRATIVE</h2>
+      <p class="pixel-text"> Nadia finds herself trapped in an infernal railway system, where demonic lords control different lines. Guided by what she believes are memories of her deceased sister, she must fight her way through this subterranean world, as she discovers dark truths about her past and the real nature of that place.</p>
+    </div>
+    
+    <!-- Game Objective -->
+    <div class="pixel-section">
+      <h2 class="section-title">GAME OBJECTIVES</h2>
+      <ul class="pixel-list">
+        <li>Explore interconnected tunnels and stations</li>
+        <li>Defeat demonic bosses to gain new abilities</li>
+        <li>Solve environmental puzzles</li>
+        <li>Uncover the truth about your sister and this hellish world</li>
+      </ul>
+    </div>
+    
+    <!-- Art Style -->
+    <div class="pixel-section">
+      <h2 class="section-title">ART STYLE</h2>
+      <div class="row">
+              <div class="col-md-12">
+                  <img src="imagenes/arte.jpg" class="img-fluid pixel-img" alt="Concept2">
+              </div>
+       </div>
+
+          <p> Our pixel-art aesthetic combines gritty urban decay with supernatural elements, inspired by:</p>
+          <ul class="pixel-list">
+              <li>Classic Metroidvania games</li>
+              <li>Underground graffiti culture</li>
+              <li>Gothic and demonic mythology</li>
+              <li>Barcelona's unique architecture (like Gaudí's mosaics)</li>
+          </ul>
+      </div>
+
+
+ <!-- Team -->
+<div class="pixel-section">
+  <h2 class="section-title"> LAST STOP STUDIOS TEAM</h2>
+  <p> LAST STOP STUDIOS was born in february 2025 as part of a collaborative university project, bringing together 16 passionate students with a shared goal, to create a unique, dark and immersive metroidvania atmospheric gaming experience. </p>
+
+  <!-- Primera fila -->
+  <div class="row">
+    <div class="col-md-4 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">ANA ALCARAZ</h3>
+        <p class="pixel-text">Development Lead</p>
+        <p class="pixel-text">Gameplay Developer</p>
+        <p class="pixel-text">Engine Developer</p>
+        <p class="pixel-text">Technical Artist</p>
+      </div>
+    </div>
+    <div class="col-md-4 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">JAUME BENEJAM</h3>
+        <p class="pixel-text">Art Lead</p>
+        <p class="pixel-text">Narrative Design</p>
+        <p class="pixel-text">Concept Artist</p>
+        <p class="pixel-text">Sprite Artist</p>
+        <p class="pixel-text">Animatics</p>
+      </div>
+    </div>
+    <div class="col-md-4 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">PABLO SANJOSE</h3>
+        <p class="pixel-text">Lead Game Design</p>
+        <p class="pixel-text">Level Design</p>
+        <p class="pixel-text">Narrative Design</p>
+        <p class="pixel-text">Technical Artist</p>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Segunda fila -->
+   
+  <div class="row">
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">VICTOR GONZALEZ</h3>
+        <p class="pixel-text">Gameplay Developer</p>
+        <p class="pixel-text">Engine Developer</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">LAIA CANALETA</h3>
+        <p class="pixel-text">Narrative Design</p>
+        <p class="pixel-text">Concept Artist</p>
+        <p class="pixel-text">Animatics</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">JAVIER VIDA</h3>
+        <p class="pixel-text">Narrative Design</p>
+        <p class="pixel-text">Concept Artist</p>
+        <p class="pixel-text">Sprite Artist</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">ABRIL HERNANDEZ</h3>
+        <p class="pixel-text">Level Design</p>
+        <p class="pixel-text">Background Artist</p>
+        <p class="pixel-text">Animatics</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Tercera fila -->
+  <div class="row">
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">HAOSHENG LI</h3>
+        <p class="pixel-text">Gameplay Developer</p>
+        <p class="pixel-text">Engine Developer</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">BEL PERARNAU</h3>
+        <p class="pixel-text">Background Artist</p>
+        <p class="pixel-text">UI Artist</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">MARTINA SARRIAS</h3>
+        <p class="pixel-text">Concept Artist</p>
+        <p class="pixel-text">Sprite Artist</p>
+        <p class="pixel-text">Animatics</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">SAUC PELLEJERO</h3>
+        <p class="pixel-text">Level Design</p>
+        <p class="pixel-text">Narrative Design</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Cuarta fila -->
+  <div class="row">
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">CLAUDIA RUIZ</h3>
+        <p class="pixel-text">Gameplay Developer</p>
+        <p class="pixel-text">Technical Artist</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">FELIPE SANCHEZ</h3>
+        <p class="pixel-text">Narrative Design</p>
+        <p class="pixel-text">Concept Artist</p>
+        <p class="pixel-text">UI Artist</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">NOA CABEZA</h3>
+        <p class="pixel-text">Concept Artist</p>
+        <p class="pixel-text">Background Artist</p>
+        <p class="pixel-text">Animatics</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">JULIA CORNEJO</h3>
+        <p class="pixel-text">Sprite Artist</p>
+	<p class="pixel-text">Background Artist</p>
+      </div>
+    </div>
+    <div class="col-md-3 equal-height">
+      <div class="role-card">
+        <h3 class="role-name">MARC GARCIA</h3>
+        <p class="pixel-text">UI Artist</p>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<!-- CHARACTERS Section -->
+<div class="pixel-section">
+  <h2 class="section-title">CHARACTERS</h2>
+<!-- Nadia -->
+<div style="display: flex; align-items: center; gap: 20px;">
+  <img src="imagenes/nadia.jpg" class="img-fluid pixel-img" alt="Nadia" style="max-width: 200px;">
+  <div>
+    <h3 class="pixel-text" style="color: var(--hell-accent);">Nadia</h3>
+    <p class="pixel-text">
+      The main character of the game. A strong, smart and short-tempered woman who has been raised on the streets, part of a gang and a role model to her younger sister, who has recently passed away due to Nadia's mistakes. Now, dead, she founds herself being unfairly judged by the overlords of hell, who as a punishment won't let her see her sister, a fatal mistake, because Nadia will travel through all hell for her sister, and she won't doubt to defeat anyone who stands in her way, be a rat or the lords of hell themselves.
+    </p>
+  </div>
+</div>
+<!-- Alia -->
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+  <img src="imagenes/alia.jpg" class="img-fluid pixel-img" alt="Alia" style="max-width: 200px;">
+  <div>
+    <h3 class="pixel-text" style="color: var(--hell-accent);">Alia</h3>
+    <p class="pixel-text">
+      Nadia’s little sister. Alia looks up to her older sister, treasuring any activity they get to do together as a memory to remember. She has been lost and trapped in hell since the accident where she lost her life, but with the arrival of her sister, memories which had been taken from her have started to come back, and her stay in hell is not going to be long.
+    </p>
+  </div>
+</div>
+
+<!-- Caronte -->
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+  <img src="imagenes/caronte.jpg" class="img-fluid pixel-img" alt="Caronte" style="max-width: 200px;">
+  <div>
+    <h3 class="pixel-text" style="color: var(--hell-accent);">Caronte</h3>
+    <p class="pixel-text">
+      Caronte serves as the first face Nadia meets in hell, her jailer, keeper of the keys. Caronte is charged with keeping Nadia on a Wagon for all eternity, but no-one would have guessed she was such a menace, at least not poor Caronte.
+    </p>
+  </div>
+</div>
+
+<!-- Bosses -->
+<h3 class="pixel-text" style="color: var(--hell-accent); margin-bottom: 20px;">Bosses</h3>
+
+<!-- Noma -->
+<div  style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+  <img src="imagenes/noma.jpg" class="img-fluid pixel-img" alt="Noma" style="max-width: 200px;">
+  <div>
+    <h4 class="pixel-text" style="color: var(--hell-accent);">Noma</h4>
+    <p class="pixel-text">
+      Noma, demon lord representing wrath and leader of the electrical underground line. She carries a copper whip which she uses as a weapon and has control over electricity. As demon of wrath, she doesn't have much patience and shows an explosive temperament. She will be the first of the overlords to face Nadia on her rescue mission.
+    </p>
+  </div>
+</div>
+
+<!-- Asmodeus -->
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+  <img src="imagenes/asmodeus.jpg" class="img-fluid pixel-img" alt="Asmodeus" style="max-width: 200px;">
+  <div>
+    <h4 class="pixel-text" style="color: var(--hell-accent);">Asmodeus</h4>
+    <p class="pixel-text">
+      Asmodeus, demon lord representing lust and leader of the icy line. He's a professional clown, proving his abilities in ice skating and juggling. He is fast to devalue the other demon lords, talking at their backs, since he thinks of himself as the only competent one. And, although being the demon of lust, he only finds enjoyment in the beauty of ice.
+    </p>
+  </div>
+</div>
+
+<!-- Leviatan -->
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+  <img src="imagenes/mini_satanas.jpg" class="img-fluid pixel-img" alt="miniSatanas" style="max-width: 200px;">
+  <div>
+    <h4 class="pixel-text" style="color: var(--hell-accent);">Leviatan</h4>
+    <p class="pixel-text">
+      Leviatan is the missing fourth demon lord of hell. The most powerful of the lords and the embodiment of envy. He has a lust for power, and he seeks the fall of the other lords in order to be the one and only lord of hell. And now, with the arrival of Nadia, he may have just found the way to achieve his goal.
+    </p>
+  </div>
+    <img src="imagenes/satanas.jpg" class="img-fluid pixel-img" alt="Satanas" style="max-width: 300px;">
+</div>
+
+  <!-- Enemies -->
+<h3 class="pixel-text" style="color: var(--hell-accent); margin-bottom: 20px;">Enemies</h3>
+<p class="pixel-text" style="margin-bottom: 30px;">
+  Hell's tunnels are filled with various creatures who, under the orders of the demon lords, are looking to kill Nadia. Rats, bats, spiders and even bombs, all will try to keep Nadia from escaping the grasp of hell.
+</p>
+
+<div class="row gif-container">
+        <div class="col-md-2 gif-container">
+            <img src="imagenes/rat.jpg" class="img-fluid pixel-img" alt="rata">
+        </div>
+        <div class="col-md-2 gif-container">
+            <img src="imagenes/bat.jpg" class="img-fluid pixel-img" alt="bat">
+        </div>
+        <div class="col-md-2 gif-container">
+            <img src="imagenes/bombeta.jpg" class="img-fluid pixel-img" alt="bombeta">
+        </div>
+        <div class="col-md-2 gif-container">
+            <img src="imagenes/arana.jpg" class="img-fluid pixel-img" alt="arana">
+        </div>
+        <div class="col-md-2 gif-container">
+            <img src="imagenes/paloma.jpg" class="img-fluid pixel-img" alt="paloma">
+        </div>
+    </div>
+
+<!-- ITEMS Section -->
+<div class="pixel-section">
+  <h2 class="section-title">ITEMS</h2>
+  <p class="pixel-text">
+    While exploring hell, Nadia will find various items and collectibles that will help her in achieving her goal of escaping hell and rescuing Alia. Some of these items are going to be power-ups that will bestow powerful abilities upon our protagonist, allowing her to jump midair or to dash faster than humanly possible. Others are going to be obtainable only by defeating the demon lords, these being the powerful weapons used by them like the copper whip, able to activate electrical doors, and the ice juggling balls, able to be used as projectiles to defeat enemies from afar. And finally, there are the collectibles, which are shown by Alia’s treasured memories lost throughout hell.
+  </p>
+  <div class="row gif-container">
+        <div class="col-md-3 gif-container">
+            <img src="imagenes/key.jpg" class="img-fluid pixel-img" alt="key">
+        </div>
+        <div class="col-md-3 gif-container">
+            <img src="imagenes/memory.jpg" class="img-fluid pixel-img" alt="memory">
+        </div>
+        <div class="col-md-3 gif-container">
+            <img src="imagenes/whip.jpg" class="img-fluid pixel-img" alt="whip">
+        </div>
+	<div class="col-md-3 gif-container">
+            <img src="imagenes/bolas.jpg" class="img-fluid pixel-img" alt="bolas">
+        </div>
+	<div class="col-md-3 gif-container">
+            <img src="imagenes/doble.jpg" class="img-fluid pixel-img" alt="doble">
+        </div>
+    </div>
+<div>
+
+<!-- MAPS Section -->
+<div class="pixel-section">
+  <h2 class="section-title">MAPS</h2>
+  <p class="pixel-text">
+    Hell has been completely remodeled to look like the most suffer inducing place in the world, the train. And its layout is now that of an underground, each demon lord having control of a line which represents their powers, resulting in the existence of the electrical line and the icy line. Each of them has their own tunnels where enemies roam and stations which hold powerful abilities or the demon lords themselves. And all lines are connected to the Central Station, Satanas’ creation and the only way out of hell.
+  </p>
+  <div class="text-center">
+    <img src="imagenes/Mapa.jpg" class="img-fluid pixel-img" alt="Maps">
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <img src="imagenes/DT2L1.jpg" class="img-fluid pixel-img" alt="l1">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/DE2L1.jpg" class="img-fluid pixel-img" alt="E1">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/IT1L1.jpg" class="img-fluid pixel-img" alt="L1">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/IE1L1.jpg" class="img-fluid pixel-img" alt="e1">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/DT2L2.jpg" class="img-fluid pixel-img" alt="l2">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/DE2L2.jpg" class="img-fluid pixel-img" alt="E2">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/IT1L2.jpg" class="img-fluid pixel-img" alt="L2">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/IE1L2.jpg" class="img-fluid pixel-img" alt="e2">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/EC.jpg" class="img-fluid pixel-img" alt="ec">
+  </div>
+  <div class="col-md-6">
+    <img src="imagenes/Boss.jpg" class="img-fluid pixel-img" alt="boss">
+  </div>
+</div>
+
+<!-- DECISIONS AND ENDINGS Section -->
+<div class="pixel-section">
+  <h2 class="section-title">DECISIONS AND ENDINGS</h2>
+  <p class="pixel-text">
+    Due to being a metroidvania game, freedom of exploration is a huge part of the genre. And Railway To Hell isn’t an exception, thanks to the underground layout, the player has complete freedom in how to explore the tunnels and surpass the obstacles that may be on their path, which may affect in how each player experiences the game. Also, there are two different endings depending on the choices made by the player during their playthrough, which will vary depending on if they have collected all of Alia’s memories or not.
+  </p>
+</div>
+
+    <!-- Controls -->
+<div class="pixel-section">
+  <h2 class="section-title">CONTROLES</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="pixel-text" style="color: var(--hell-light);">CONTROLLER</h3>
+      <ul class="pixel-list">
+        <li><strong>Left Stick move:</strong> left/right</li>
+        <li><strong>X/A:</strong> Jump</li>
+        <li><strong>R1/RB:</strong> Dash</li>
+        <li><strong>Square/X:</strong>Melee Atack</li>
+        <li><strong>R2 / RT:</strong> Use whip</li>
+        <li><strong>L2 / LT:</strong> Throw Balls</li>
+        <li><strong>Circle / B:</strong> Use Key (Doors and Interactions), close dialogues and use checkpoints</li>
+        <li><strong>Triangle / Y:</strong> Map</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3 class="pixel-text" style="color: var(--hell-light);">KEYBOARD</h3>
+      <ul class="pixel-list">
+        <li><strong>A/D:</strong> left/right</li>
+        <li><strong>SPACE:</strong> Jump</li>
+        <li><strong>SHIFT:</strong> Dash</li>
+        <li><strong>J:</strong> Melee Atack</li>
+        <li><strong>K:</strong> Use Whip</li>
+        <li><strong>L:</strong> Throw Balls</li>
+        <li><strong>E:</strong> Use Key (Doors and Interactions), close dialogues and use checkpoints</li>
+        <li><strong>M:</strong> Map</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery -->
+<div class="pixel-section">
+  <h2 class="section-title">GALERY</h2>
+      <div class="row">
+          <div class="col-md-6">
+              <img src="imagenes/inicio.jpg" class="img-fluid pixel-img" alt="Concept2">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/imagen.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 2">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/recuerdos.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/nomaboss.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/sala2.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/cap2.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/electric1.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/nomaboss.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/electric2.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/sala2.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/conector.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/cap2.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/ice.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/cap1.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+          <div class="col-md-6">
+              <img src="imagenes/cap3.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+          </div>
+      </div>
+    </div>
+
+    <div class="pixel-section">
+    <h2 class="section-title">CONCEPT ART</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="imagenes/nadiaconcept.jpg" class="img-fluid pixel-img" alt="Concept2">
+        </div>
+        <div class="col-md-6">
+            <img src="imagenes/hermana.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 2">
+        </div>
+        <div class="col-md-6">
+            <img src="imagenes/caronteconcept.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+        </div>
+        <div class="col-md-6">
+            <img src="imagenes/nomaconcept.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+        </div>
+        <div class="col-md-6">
+            <img src="imagenes/conceptbufon.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+        </div>
+        <div class="col-md-6">
+            <img src="imagenes/leviatanconcept.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+        </div>
+        <div class="col-md-6">
+            <img src="imagenes/mini.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+        </div>
+        <div class="col-md-6">
+            <img src="imagenes/mini2.jpg" class="img-fluid pixel-img" alt="Captura de pantalla 3">
+        </div>
+    </div>
+  </div>
+
+<div class="pixel-section">
+    <h2 class="section-title">GIFS</h2>
+    <div class="row">
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/arana.GIF" class="img-fluid pixel-img" alt="Spider" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/paloma.GIF" class="img-fluid pixel-img" alt="Pigeon" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/idlemini.gif" class="img-fluid pixel-img" alt="Final Boss" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/carontegif.gif" class="img-fluid pixel-img" alt="Caronte" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/noma.gif" class="img-fluid pixel-img" alt="Noma" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/personaje.gif" class="img-fluid pixel-img" alt="Nadia" loading="lazy">
+        </div>
+ 	<div class="col-md-4 gif-container">
+            <img src="imagenes/hellbat.gif" class="img-fluid pixel-img" alt="Hellbat" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/rata.gif" class="img-fluid pixel-img" alt="Rata" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/asmodeus.gif" class="img-fluid pixel-img" alt="Asmodeus" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/whip.gif" class="img-fluid pixel-img" alt="Whip" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/llave.gif" class="img-fluid pixel-img" alt="Llave" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/recuerdo.gif" class="img-fluid pixel-img" alt="Recuerdo" loading="lazy">
+        </div>
+        <div class="col-md-4 gif-container">
+            <img src="imagenes/bolas.gif" class="img-fluid pixel-img" alt="Bolas" loading="lazy">
+        </div>
+    </div>
+</div>
+
+<!-- Thanks -->
+  <div class="pixel-section">
+      <h2 class="section-title">ACKNOWLEDGEMENTS</h2>
+
+        <!-- Primera fila -->
+  <div class="row">
+    <div class="col-md-14">
+      <div class="role-card">
+        <h3 class="role-name">ALBERT FERRER</h3>
+        <p class="pixel-text">Our talented friend and composer - for giving Railway to Hell its soul through your music</p>
+      </div>
+    </div>
+  </div>
+
+    <!-- Links -->
+  <div class="pixel-section text-center">
+      <h2 class="section-title">Links</h2>
+      <a href="https://github.com/LastStopStudios/RAILWAY-TO-HELL/tree/main" class="pixel-btn" target="_blank">GITHUB</a>
+      <a href="https://github.com/LastStopStudios/RAILWAY-TO-HELL/releases" class="pixel-btn" target="_blank">LAST RELEASE</a>
+    </div>
+    
+  <!-- Footer -->
+  <div class="pixel-footer">
+      <p>© 2025 RAILWAY TO HELL - LAST STOP STUDIOS</p>
+      <p>"DEATH IS NOT THE LAST STOP"</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+    
